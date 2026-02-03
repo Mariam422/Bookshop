@@ -1,10 +1,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Icon } from "@iconify/react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#3B2F4A] text-white py-8 px-10">
+    <footer className="w-full bg-[#3B2F4A] text-white py-8 px-5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <Link to="/" className="flex items-center gap-2 text-xl font-semibold">
           <img
@@ -19,7 +18,7 @@ export default function Footer() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              isActive ? "text-pink-400" : "hover:text-pink-400 transition"
+              isActive ? "text-orange-500" : "hover:text-pink-400 transition"
             }
           >
             Home
@@ -27,7 +26,7 @@ export default function Footer() {
           <NavLink
             to="/books"
             className={({ isActive }) =>
-              isActive ? "text-pink-400" : "hover:text-pink-400 transition"
+              isActive ? "text-orange-500" : "hover:text-pink-400 transition"
             }
           >
             Books
@@ -35,39 +34,51 @@ export default function Footer() {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              isActive ? "text-pink-400" : "hover:text-pink-400 transition"
+              isActive ? "text-orange-500" : "hover:text-pink-400 transition"
             }
           >
             About us
           </NavLink>
         </ul>
 
-        <div className="flex gap-4 text-lg">
-          <img
-            src="/Face.png"
-            alt="logos:facebook Logo"
-            className="w-5 h-8 object-contain"
-          />
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex items-center gap-6">
+            <img
+              src="/Face.png"
+              alt="logos:facebook Logo"
+              className="w-5 h-8 object-contain"
+            />
 
-          <img
-            src="/insta.png"
-            alt="logos:instagram Logo"
-            className="w-5 h-8 object-contain"
-          />
+            <img
+              src="/insta.png"
+              alt="logos:instagram Logo"
+              className="w-5 h-8 object-contain"
+            />
 
-          <img
-            src="/youtube.png"
-            alt="logos:youtube Logo"
-            className="w-5 h-8 object-contain"
-          />
+            <img
+              src="/youtube.png"
+              alt="logos:youtube Logo"
+              className="w-5 h-8 object-contain"
+            />
+            <img
+              src="/Vector (6).png"
+              alt="logos:X-Twitter Logo"
+              className="w-5 h-8 object-contain"
+            />
+          </div>
         </div>
       </div>
 
       <hr className="my-6 border-gray-400/50" />
-
-      <p className="text-center text-xs font-light">
-        &copy; 2024 EraaSoft. All Rights Reserved.
-      </p>
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="text-xs">&copy; 2024 EraaSoft. All Rights Reserved.</p>
+        <div className="flex items-center gap-2 text-xs border border-gray-500 px-2 py-1 rounded-xl cursor-pointer">
+          <select className="bg-[#3B2F4A] text-xs text-gray-500 focus:outline-none">
+            <option>Arabic</option>
+            <option>English</option>
+          </select>
+        </div>
+      </div>
     </footer>
   );
 }

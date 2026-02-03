@@ -8,7 +8,6 @@
 // import Hero from "./Components/Header/Hero";
 // import Navbar from "./Components/Header/Navbar";
 
-
 // function App() {
 //   return (
 //     <Routes>
@@ -27,28 +26,36 @@
 // }
 
 // export default App;
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Components/Layout/Layout";
 import Home from "./Pages/Home/Home";
-import Login from "./Pages/Login/Login";
-import Register from "./Pages/Register/Register";
+import Login from "./Pages/Auth/Login/Login";
+import Register from "./Pages/Auth/Register/Register";
 import About from "./Pages/About/About";
 import Books from "./Pages/Books/Books";
+import ShopNow from "./Pages/Home/ShopNow";
+import ForgetPassword from "./Pages/Auth/Forget-Password/ForgetPassword";
+import ResetPassword from "./Pages/Auth/Reset-Password/ResetPassword";
+import NewPassword from "./Pages/Auth/New-Password/NewPassword";
+
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* أول ما يفتح الموقع */}
         <Route index element={<Home />} />
 
-        {/* باقي الصفحات */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="ForgetPassword" element={<ForgetPassword />} />
+        <Route path="ResetPassword" element={<ResetPassword /> } />
+        <Route path="NewPassword" element={<NewPassword />} />
         <Route path="books" element={<Books />} />
         <Route path="about" element={<About />} />
+        <Route path="shopnow" element={<ShopNow />} />
+        
 
-        {/* لو دخل لينك غلط */}
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
