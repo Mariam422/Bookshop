@@ -1,24 +1,27 @@
 import { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Icon } from "@iconify/react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
+import { ResetStore } from "../passwordResetStore/resetStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
+  const setUser = ResetStore((state) => state.setUser);
 
-    const handleRegister = async (values, { setSubmitting, setErrors }) => {
+  const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
       const res = await axios.post(
         "https://bookstore.eraasoft.pro/api/register",
         values,
       );
       console.log("Register Success:", res.data);
-      navigate("/login");
+      setUser(res.data.data);
+      navigate("/");
     } catch (err) {
       setErrors({ api: "Registration failed. Please try again." });
     } finally {
@@ -30,7 +33,7 @@ export default function Register() {
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     email: Yup.string()
-      .email("Invalid email format")
+      .email("The email field is required.")
       .required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -41,10 +44,8 @@ export default function Register() {
     terms: Yup.boolean().oneOf([true], "You must accept the terms"),
   });
 
-
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen p-10 flex items-center justify-center bg-gray-100">
       <div className=" w-full max-w-md shadow-lg rounded-lg p-8">
         <h2 className="text-center text-pink-600 font-semibold mb-6">
           Create Account
@@ -65,10 +66,10 @@ export default function Register() {
           {({ isSubmitting }) => (
             <Form>
               <div className="flex gap-4 mb-4">
-                {["first_name","last_name"].map((field, idx) => (
+                {["first_name", "last_name"].map((field, idx) => (
                   <div className="w-1/2" key={field}>
                     <label className="block text-sm font-medium mb-1">
-                      {field === "first_name" ? "First Name" :"Last Name"}
+                      {field === "first_name" ? "First Name" : "Last Name"}
                     </label>
                     <Field
                       type="text"

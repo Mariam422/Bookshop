@@ -161,7 +161,7 @@ export default function FlashSale({ flashSales }) {
                     </div>
 
                     <div>
-                      <div className="flex items-center gap-0.5 mt-2">
+                       <div className="flex items-center gap-0.5 mt-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <AiFillStar
                             key={star}

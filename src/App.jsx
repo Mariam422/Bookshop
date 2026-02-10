@@ -38,6 +38,7 @@ import ShopNow from "./Pages/Home/ShopNow";
 import ForgetPassword from "./Pages/Auth/Forget-Password/ForgetPassword";
 import ResetPassword from "./Pages/Auth/Reset-Password/ResetPassword";
 import NewPassword from "./Pages/Auth/New-Password/NewPassword";
+import Profile from "./Pages/Auth/Profile/Profile";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Route path="ForgetPassword" element={<ForgetPassword />} />
         <Route path="ResetPassword" element={<ResetPassword /> } />
         <Route path="NewPassword" element={<NewPassword />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="books" element={<Books />} />
         <Route path="about" element={<About />} />
         <Route path="shopnow" element={<ShopNow />} />

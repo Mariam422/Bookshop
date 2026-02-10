@@ -56,13 +56,13 @@ import Hero from "../../Components/Header/Hero";
 import SliderData from "../../Components/Ui/SliderData";
 import Recommended from "../../Components/Ui/Recommended";
 import FlashSale from "../../Components/Ui/FlashSale";
-import Caard from "./Caard";
 import { getHomeData } from "../../Api/HomeApi";
 
 export default function Home() {
   const [recommended, setRecommended] = useState([]);
   const [flashSales, setFlashSales] = useState([]);
-  const [bestSelling, setBestSelling] = useState([]);
+  const [sliderImages, setSliderImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,32 +72,29 @@ export default function Home() {
 
         setRecommended(data.recommended || []);
         setFlashSales(data.flashSales || []);
-        setBestSelling(data.best_selling_image || []);
+        setSliderImages(data.best_selling_image || []);
       } catch (error) {
         console.error("Failed to fetch home data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  if (loading) {
+    return <p className="text-center py-20 text-xl">Loading Home...</p>;
+  }
+
   return (
     <div>
       <Hero variant="home" />
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 px-10 py-16">
-        {recommended.map((item) => (
-          <Caard
-            key={item.bookId}
-            card={{
-              title: item.bookName,
-              discription: item.description,
-              image: item.image || "/RichDad.png",
-            }}
-          />
-        ))}
-      </div>
-      <SliderData bestSelling={bestSelling} />
+
+      <SliderData images={sliderImages} />
+
       <Recommended recommended={recommended} />
+
       <FlashSale flashSales={flashSales} />
     </div>
   );

@@ -23,7 +23,7 @@
 // }
 export default function Hero({ variant }) {
   return (
-    <section>
+    <section className="">
       {variant === "home" && (
         <div className="absolute inset-1 flex justify-center items-center">
           <div className="flex w-full max-w-xl bg-white rounded-full overflow-hidden shadow-lg">
@@ -37,7 +37,7 @@ export default function Hero({ variant }) {
         </div>
       )}
       {variant === "about" && (
-        <div className="absolute inset-1 flex justify-center items-center text-white bg-opacity-50 p-6">
+        <div className="absolute inset-1 flex justify-center items-center text-white p-6">
           <div className="text-center max-w-xl">
             <h3 className="text-3xl font-bold mb-4">About Bookshop</h3>
             <p className="text-lg leading-relaxed">

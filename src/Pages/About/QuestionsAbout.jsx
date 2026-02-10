@@ -8,8 +8,12 @@ export default function QuestionsAbout() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,14 +21,27 @@ export default function QuestionsAbout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setStatusMessage("");
+
     try {
-      await axios.post("", formData);
-      alert("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
+      const response = await axios.post(
+        "https://bookstore.eraasoft.pro/api/contacts/store",
+        formData,
+      );
+
+      if (response.data.statusCode === 200) {
+        setStatusMessage(response.data.message);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setStatusMessage("Failed to send message.");
+      }
     } catch (error) {
       console.error(error);
-      alert("Failed to send message");
+      setStatusMessage("Failed to send message.");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -65,6 +82,16 @@ export default function QuestionsAbout() {
               />
             </div>
 
+            <input
+              type="text"
+              name="subject"
+              placeholder="Subject"
+              value={formData.subject}
+              onChange={handleChange}
+              className="w-full p-3 rounded bg-white/10 placeholder-gray-300 focus:outline-none"
+              required
+            />
+
             <textarea
               name="message"
               placeholder="Your Message"
@@ -77,9 +104,14 @@ export default function QuestionsAbout() {
             <button
               type="submit"
               className="bg-pink-600 hover:bg-pink-500 transition-colors px-6 py-3 rounded text-white font-medium"
+              disabled={loading}
             >
-              Send Message
+              {loading ? "Sending..." : "Send Message"}
             </button>
+
+            {statusMessage && (
+              <p className="text-sm mt-2 text-green-500">{statusMessage}</p>
+            )}
           </form>
         </div>
 

@@ -7,7 +7,7 @@ export default function Header() {
       <div
         className="
         relative h-screen w-full
-        bg-[url('/libarayjpg.png')]  bg-contain bg-cover bg-no-repeat
+        bg-[url('/libarayjpg.png')] bg-cover
       "
       ></div>
       <div className="absolute inset-0 bg-black/60"></div>

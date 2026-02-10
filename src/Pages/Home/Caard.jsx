@@ -26,7 +26,7 @@ export default function Caard({ card }) {
         {card.title}
       </h3>
       <p className="text-gray-500 text-sm">
-        {card.discription}
+        {card.description}
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ export default function BookCard({ book }) {
       alert("Book added to cart");
     } catch (error) {
       console.log(error);
-      alert("Failed to adsd book to cart");
+      alert("Failed to add book to cart");
     } finally {
       setLoading(false);
     }
