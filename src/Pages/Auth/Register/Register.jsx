@@ -5,8 +5,7 @@ import { Icon } from "@iconify/react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
-import { ResetStore } from "../ResetPassword/resetStore";
-
+import { ResetStore } from "../passwordResetStore/ResetStore";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
