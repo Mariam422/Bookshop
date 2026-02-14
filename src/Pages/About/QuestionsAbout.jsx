@@ -46,7 +46,8 @@ export default function QuestionsAbout() {
 
   return (
     <div className="relative bg-[#2C243A] overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/Questions.png')] bg-cover bg-center opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('/Questions.jpg')] bg-cover bg-center opacity-10"></div>
+
       <div className="relative z-10 flex flex-col md:flex-row justify-between max-w-6xl mx-auto py-20 px-5 text-white gap-10">
         <div className="flex-1">
           <h2 className="text-3xl font-bold mb-2">

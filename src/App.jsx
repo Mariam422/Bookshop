@@ -36,7 +36,7 @@ import About from "./Pages/About/About";
 import Books from "./Pages/Books/Books";
 import ShopNow from "./Pages/Home/ShopNow";
 import ForgetPassword from "./Pages/Auth/Forget-Password/ForgetPassword";
-import ResetPassword from "./Pages/Auth/Reset-Password/ResetPassword";
+import ResetPassword from "./Pages/Auth/ResetPassword/ResetPassword";
 import NewPassword from "./Pages/Auth/New-Password/NewPassword";
 import Profile from "./Pages/Auth/Profile/Profile";
 import ProductDetails from "./Pages/Books/ProductDetails/ProductDetails";
