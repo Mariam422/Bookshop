@@ -120,15 +120,26 @@
 //       )}
 //     </nav>
 //   );
-// }
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Heart } from "lucide-react";
+// }import { useState } from "react";import React, { useState } from "react";
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Menu, X, Heart, LogOut } from "lucide-react";
+import { MdOutlineShoppingCart } from "react-icons/md";
 import { AuthStore } from "../../Pages/Auth/AuthStore";
+import Button from "../Ui/Button";
+
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = AuthStore();
+  const user = AuthStore((state) => state.user);
+  const logout = AuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+    navigate("/");
+  };
 
   return (
     <nav className="absolute top-0 left-0 w-full z-50">
@@ -175,36 +186,52 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow">
+              <Link
+                to="/wishlist"
+                className="p-2 rounded-full hover:bg-pink-100 transition"
+              >
+                <Heart size={20} />
+              </Link>
+              <Link
+                to="/cart"
+                className="p-2 rounded-full hover:bg-pink-100 transition"
+              >
+                <MdOutlineShoppingCart size={20} />
+              </Link>
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 px-3 py-1 rounded-full shadow hover:scale-105 transition"
+              >
                 <img
                   src={user?.image === "default" ? "/avatar.png" : user?.image}
                   alt="User Avatar"
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <div className="flex flex-col">
-                  <span className="text-black text-sm font-medium">
+                  <span className="text-white text-sm font-medium">
                     {user?.first_name} {user?.last_name}
                   </span>
-                  <span className="text-gray-500 text-xs">{user?.email}</span>
+                  <span className="text-gray-300 text-xs">{user?.email}</span>
                 </div>
-              </div>
-              <button className="p-2 rounded-full hover:bg-pink-100 transition">
-                <Heart size={20} className="text-pink-600" />
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-xs text-white hover:underline"
+              >
+                <LogOut size={20} />
               </button>
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="bg-pink-600 hover:bg-pink-700 transition px-4 py-1.5 rounded-md text-sm text-white"
-              >
-                Log in
+              <Link to="/login">
+                <Button width="fit" isMainBtn>
+                  Login
+                </Button>
               </Link>
-              <Link
-                to="/register"
-                className="bg-white text-pink-600 hover:bg-gray-100 transition px-4 py-1.5 rounded-md text-sm font-medium"
-              >
-                Sign Up
+              <Link to="/register">
+                <Button width="fit" isMainBtn={false}>
+                  Sign Up
+                </Button>
               </Link>
             </>
           )}
@@ -218,7 +245,7 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-white/90 text-black px-6 py-4 space-y-3 transition-all duration-300">
+        <div className="md:hidden bg-white text-black px-6 py-4 flex flex-col gap-3 transition-all duration-300">
           <NavLink
             to="/"
             onClick={() => setIsOpen(false)}
@@ -248,22 +275,48 @@ export default function Navbar() {
           </NavLink>
 
           {user ? (
-            <div className="flex items-center gap-2 mt-3">
-              <img
-                src={user?.image === "default" ? "/avatar.png" : user?.image}
-                alt="User Avatar"
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <div className="flex flex-col">
-                <span className="text-black font-medium text-sm">
-                  {user?.first_name} {user?.last_name}
-                </span>
-                <span className="text-gray-500 text-xs">{user?.email}</span>
-              </div>
-              <Heart size={20} className="text-pink-600" />
+            <div className="flex flex-col gap-3 mt-3 border-t pt-3">
+              <Link
+                to="/wishlist"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 p-2 rounded hover:bg-pink-100"
+              >
+                <Heart size={20} className="text-pink-600" /> Wishlist
+              </Link>
+              <Link
+                to="/cart"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 p-2 rounded hover:bg-pink-100"
+              >
+                <MdOutlineShoppingCart size={20} className="text-pink-600" />{" "}
+                Cart
+              </Link>
+              <Link
+                to="/profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-100"
+              >
+                <img
+                  src={user?.image === "default" ? "/avatar.png" : user?.image}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+                <div className="flex flex-col">
+                  <span className="font-medium text-sm">
+                    {user?.first_name} {user?.last_name}
+                  </span>
+                  <span className="text-gray-500 text-xs">{user?.email}</span>
+                </div>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 p-2 rounded hover:bg-pink-100"
+              >
+                <LogOut size={20} /> Logout
+              </button>
             </div>
           ) : (
-            <>
+            <div className="flex flex-col gap-2 mt-3 border-t pt-3">
               <Link
                 to="/login"
                 onClick={() => setIsOpen(false)}
@@ -278,7 +331,7 @@ export default function Navbar() {
               >
                 Sign Up
               </Link>
-            </>
+            </div>
           )}
         </div>
       )}

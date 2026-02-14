@@ -21,18 +21,27 @@
 //     </section>
 //   );
 // }
+import { IoIosSearch } from "react-icons/io";
+import { LuMic } from "react-icons/lu";
 export default function Hero({ variant }) {
   return (
     <section className="">
       {variant === "home" && (
         <div className="absolute inset-1 flex justify-center items-center">
-          <div className="flex w-full max-w-xl bg-white rounded-full overflow-hidden shadow-lg">
+          <div className="flex items-center w-full max-w-xl bg-white rounded-full overflow-hidden shadow-lg">
             <input
               type="text"
               placeholder="Search book..."
-              className="flex-1 px-5 py-3 outline-none"
+              className="flex-1 px-5 py-3 outline-none text-sm"
             />
-            <button className="bg-pink-600 px-6 text-white">Search</button>
+
+            <button className="px-3 text-gray-500 hover:text-pink-600 transition">
+              <LuMic className="w-5 h-5" />
+            </button>
+
+            <button className="bg-pink-600 hover:bg-pink-700 transition px-5 py-3 flex items-center justify-center">
+              <IoIosSearch className="w-5 h-5 text-white" />
+            </button>
           </div>
         </div>
       )}

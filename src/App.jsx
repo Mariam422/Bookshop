@@ -39,28 +39,41 @@ import ForgetPassword from "./Pages/Auth/Forget-Password/ForgetPassword";
 import ResetPassword from "./Pages/Auth/Reset-Password/ResetPassword";
 import NewPassword from "./Pages/Auth/New-Password/NewPassword";
 import Profile from "./Pages/Auth/Profile/Profile";
-
+import ProductDetails from "./Pages/Books/ProductDetails/ProductDetails";
+import Cart from "./Pages/Cart/Cart";
+import Wishlist from "./Pages/Wishlist/Wishlist";
+import Checkout from "./Pages/Checkout/Checkout";
+import { Toaster } from "react-hot-toast";
+import Success from "./Pages/Success/Success";
+import OrderHistory from "./Pages/OrderHistory/OrderHistory";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
+    <>
+      <Toaster position="top-right" />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
 
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="ForgetPassword" element={<ForgetPassword />} />
-        <Route path="ResetPassword" element={<ResetPassword /> } />
-        <Route path="NewPassword" element={<NewPassword />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="books" element={<Books />} />
-        <Route path="about" element={<About />} />
-        <Route path="shopnow" element={<ShopNow />} />
-        
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/ForgetPassword" element={<ForgetPassword />} />
+          <Route path="/ResetPassword" element={<ResetPassword />} />
+          <Route path="/NewPassword" element={<NewPassword />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/books" element={<Books />} />
+          <Route path="/books/:id" element={<ProductDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/orders" element={<OrderHistory/>} />
 
-        <Route path="*" element={<Navigate to="/" />} />
-      </Route>
-    </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 

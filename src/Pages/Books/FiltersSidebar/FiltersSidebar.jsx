@@ -1,8 +1,9 @@
 import { FaSliders } from "react-icons/fa6";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import categories from "./Categories";
 
-export default function FiltersSidebar() {
+export default function FiltersSidebar({ selectedFilters, onFilterChange }) {
   const [showMore, setShowMore] = useState({
     categories: false,
     publishers: false,
@@ -14,19 +15,6 @@ export default function FiltersSidebar() {
     publishers: false,
     years: false,
   });
-
-  const categories = [
-    { name: "All Categories", count: 1450 },
-    { name: "Business", count: 140 },
-    { name: "Kids", count: 309 },
-    { name: "Art", count: 102 },
-    { name: "History", count: 204 },
-    { name: "Romance", count: 89 },
-    { name: "Fantasy", count: 47 },
-    { name: "Self Help", count: 163 },
-    { name: "Cooking", count: 211 },
-    { name: "Sports", count: 92 },
-  ];
 
   const publishers = [
     { name: "Paulo Coelho", count: 210 },
@@ -58,6 +46,32 @@ export default function FiltersSidebar() {
     setOpenSection((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
+  const toggleShowMore = (section) => {
+    setShowMore((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleCheckboxChange = (sectionKey, itemName) => {
+    if (sectionKey === "categories") {
+      onFilterChange({
+        ...selectedFilters,
+        [sectionKey]: [itemName],
+      });
+    } else {
+      const current = selectedFilters[sectionKey] || [];
+      if (current.includes(itemName)) {
+        onFilterChange({
+          ...selectedFilters,
+          [sectionKey]: current.filter((i) => i !== itemName),
+        });
+      } else {
+        onFilterChange({
+          ...selectedFilters,
+          [sectionKey]: [...current, itemName],
+        });
+      }
+    }
+  };
+
   const renderFilterSection = (title, items, sectionKey) => {
     const isOpen = openSection[sectionKey];
     const isExpanded = showMore[sectionKey];
@@ -79,31 +93,30 @@ export default function FiltersSidebar() {
 
         {isOpen && (
           <div className="flex flex-col gap-2 text-sm mt-2">
-            <h3 className="font-semibold flex items-center gap-2 text-base text-pink-300 pb-2">
-              {title}
-            </h3>
-
             {visibleItems.map((item) => (
               <label
                 key={item.name}
                 className="flex justify-between items-center gap-2 cursor-pointer"
               >
                 <div className="flex items-center gap-2">
-                  <input type="checkbox" className="accent-black" />
+                  <input
+                    type="checkbox"
+                    className="accent-black"
+                    checked={selectedFilters[sectionKey].includes(item.name)}
+                    onChange={() => handleCheckboxChange(sectionKey, item.name)}
+                  />
                   {item.name}
                 </div>
                 <span className="text-gray-400 text-xs">({item.count})</span>
               </label>
             ))}
 
-            {!isExpanded && items.length > 5 && (
+            {items.length > 5 && (
               <button
-                onClick={() =>
-                  setShowMore((prev) => ({ ...prev, [sectionKey]: true }))
-                }
+                onClick={() => toggleShowMore(sectionKey)}
                 className="text-pink-500 text-sm mt-1 hover:underline text-left"
               >
-                Load More
+                {isExpanded ? "Show Less" : "Load More"}
               </button>
             )}
           </div>

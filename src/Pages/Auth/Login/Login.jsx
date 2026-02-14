@@ -1,31 +1,34 @@
 import { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Icon } from "@iconify/react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
-
-
+import { AuthStore } from "../AuthStore";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const loginStore = AuthStore((state) => state.login);
 
-   const handleLogin = async (values, { setSubmitting, setErrors }) => {
-     try {
-       const res = await axios.post(
-         "https://bookstore.eraasoft.pro/api/login",
-         values,
-       );
-       console.log(res.data);
-        navigate("/home");
-     } catch (err) {
-       setErrors({ api: "Invalid email or password" });
-     } finally {
-       setSubmitting(false);
-     }
-   };
+  const handleLogin = async (values, { setSubmitting, setErrors }) => {
+    try {
+      const res = await axios.post(
+        "https://bookstore.eraasoft.pro/api/login",
+        values,
+      );
+      const { user, token } = res.data.data;
+
+      loginStore(user, token);
+
+      navigate("/");
+    } catch (err) {
+      setErrors({ api: "Invalid email or password" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const loginSchema = Yup.object({
     email: Yup.string()
@@ -36,9 +39,7 @@ export default function Login() {
       .required("Password is required"),
   });
 
-
   return (
-    
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className=" w-full max-w-md shadow-lg rounded-lg p-8">
         <h2 className="text-center text-pink-600 font-semibold mb-6">
@@ -108,7 +109,10 @@ export default function Login() {
                   />
                   Remember me
                 </label>
-                <Link to="/ForgetPassword" className="text-pink-600 hover:underline">
+                <Link
+                  to="/ForgetPassword"
+                  className="text-pink-600 hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>

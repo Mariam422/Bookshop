@@ -162,40 +162,44 @@
 //       </div>
 //     </div>
 //   );
-// }
-import { useState, useEffect } from "react";
+// }import { useState, useEffect } from "react";import { useState, useEffect } from "react";import { useState, useEffect } from "react";import { useState, useEffect } from "react";
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BooksList from "./BooksList/BooksList";
 import FiltersSidebar from "./FiltersSidebar/FiltersSidebar";
 import BooksTabs from "./BooksHeader/BooksTabs";
 import Search from "./BooksHeader/Search";
 import Sort from "./BooksHeader/Sort";
+import Pagination from "./Pagination";
 
 const tabs = [
-  "Business",
-  "Self Help",
-  "History",
-  "Romance",
-  "Fantasy",
-  "Art",
-  "Kids",
-  "Music",
-  "Cooking",
+  "All",
+  "Manager of Weapons Specialists",
+  "Automotive Technician",
+  "Petroleum Pump Operator",
 ];
 
 export default function Books() {
   const [books, setBooks] = useState([]);
-  const [category, setCategory] = useState("Business");
+  const [category, setCategory] = useState("All");
   const [sortType, setSortType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
+
+  const [selectedFilters, setSelectedFilters] = useState({
+    categories: [],
+    publishers: [],
+    years: [],
+  });
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
         const res = await axios.get("https://bookstore.eraasoft.pro/api/book");
-
         const apiBooks = res.data.data.books.map((b) => ({
           id: b.bookId,
           title: b.bookName,
@@ -222,39 +226,74 @@ export default function Books() {
     fetchBooks();
   }, []);
 
-  let filteredBooks = books.filter(
-    (book) =>
-      book.category === category &&
+  let filteredBooks = books.filter((book) => {
+    const categoryFilter =
+      selectedFilters.categories.length === 0 ||
+      selectedFilters.categories.includes(book.category);
+
+    const publisherFilter =
+      selectedFilters.publishers.length === 0 ||
+      selectedFilters.publishers.includes(book.author);
+
+    const yearFilter =
+      selectedFilters.years.length === 0 ||
+      selectedFilters.years.includes(String(book.year));
+
+    return categoryFilter && publisherFilter && yearFilter;
+  });
+
+  if (category !== "All") {
+    filteredBooks = filteredBooks.filter((book) => book.category === category);
+  }
+
+  if (searchTerm) {
+    filteredBooks = filteredBooks.filter((book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+    );
+  }
 
   if (sortType === "low") filteredBooks.sort((a, b) => a.price - b.price);
   if (sortType === "high") filteredBooks.sort((a, b) => b.price - a.price);
 
+  useEffect(() => {
+    setPage(0);
+  }, [category, searchTerm, sortType, selectedFilters]);
 
-  if (loading) return <p className="text-center py-20">Loading books...</p>;
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentBooks = filteredBooks.slice(startIndex, endIndex);
 
   return (
     <div className="bg-gray-50 min-h-screen p-4">
-      <div className="flex flex-col lg:flex-row gap-6 p-5">
-        <aside className="lg:w-1/4">
-          <FiltersSidebar />
+      <div className="flex flex-col lg:flex-row gap-6 p-2 lg:p-5">
+        <aside className="w-full lg:w-1/4">
+          <FiltersSidebar
+            selectedFilters={selectedFilters}
+            onFilterChange={setSelectedFilters}
+          />
         </aside>
-
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <Search onSearch={setSearchTerm} />
             </div>
-            <div className="w-40 sm:w-48 md:w-56">
+            <div className="w-full sm:w-40 md:w-56">
               <Sort onSort={setSortType} />
             </div>
           </div>
-
           <BooksTabs tabs={tabs} activeTab={category} onChange={setCategory} />
 
           {filteredBooks.length > 0 ? (
-            <BooksList books={filteredBooks} />
+            <>
+              <BooksList books={currentBooks} />
+              <Pagination
+                count={filteredBooks.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={setPage}
+                onRowsPerPageChange={setRowsPerPage}
+              />
+            </>
           ) : (
             <p className="text-center py-20">No books found.</p>
           )}
