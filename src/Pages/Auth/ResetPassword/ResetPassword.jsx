@@ -2,7 +2,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ResetStore } from "../passwordResetStore/resetStore";
+import { ResetStore } from "../ResetPassword/ResetStore";
 
 export default function ResetPassword() {
   const inputsRef = useRef([]);

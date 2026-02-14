@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
-import { ResetStore } from "../passwordResetStore/resetStore";
+import { ResetStore } from "../ResetPassword/ResetStore";
 import * as Yup from "yup";
 import axios from "axios";
 
